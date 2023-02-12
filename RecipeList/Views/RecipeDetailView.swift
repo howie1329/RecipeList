@@ -16,7 +16,7 @@ struct RecipeDetailView: View {
     
     var body: some View {
         ScrollView{
-            VStack(alignment:.leading){
+            VStack(alignment:.leading, spacing:2){
                 
                 // MARK: Recipe Image
                 Image(recipe.image)
@@ -31,6 +31,13 @@ struct RecipeDetailView: View {
                     .padding(.top,10)
                     .padding(.leading)
                     .font(.largeTitle)
+                
+                HStack{
+                    ForEach(recipe.highlights,id:\.self){
+                        Text($0)
+                    }
+                }
+                .padding(.leading)
                 
                 // MARK: Serving Size Picker
                 VStack(alignment:.leading) {

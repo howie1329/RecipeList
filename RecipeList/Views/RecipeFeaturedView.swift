@@ -11,6 +11,7 @@ struct RecipeFeaturedView: View {
     @EnvironmentObject var model:RecipeModel
     
     @State var isDetailViewVisable = false
+    @State var tapSelectionIndex = 0
     
     var body: some View {
         
@@ -23,7 +24,7 @@ struct RecipeFeaturedView: View {
             
             GeometryReader{geo in
                 
-                TabView{
+                TabView (selection:$tapSelectionIndex){
                     
                     ForEach(0..<model.recipes.count){index in
                         
@@ -53,6 +54,7 @@ struct RecipeFeaturedView: View {
                                 .cornerRadius(15)
                                 .shadow(color: Color(red: 0, green: 0, blue: 0, opacity: 0.5), radius: 10, x: -5,y: 5)
                             }
+                            .tag(index)
                             .buttonStyle(PlainButtonStyle())
                             .sheet(isPresented: $isDetailViewVisable) {
                                 RecipeDetailView(recipe: model.recipes[index])
@@ -70,10 +72,14 @@ struct RecipeFeaturedView: View {
             VStack(alignment: .leading, spacing:10){
                 Text("Preparation Time:")
                     .font(.headline)
-                Text("1 Hour")
+                Text("\(model.recipes[tapSelectionIndex].prepTime)")
                 Text("Highlights")
                     .font(.headline)
-                Text("Healthy, Hearty")
+                HStack {
+                    ForEach(model.recipes[tapSelectionIndex].highlights, id: \.self){ item in
+                        Text(item)
+                    }
+                }
             }
             .padding([.leading,.bottom])
             
